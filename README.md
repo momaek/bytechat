@@ -1,1 +1,1 @@
-# bytechat
+# ByteChat
