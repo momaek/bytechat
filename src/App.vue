@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
+import { Button } from '@/components/ui/button'
 </script>
 
 <template>
   <div>
     <a href="https://vite.dev" target="_blank">
+      <Button>Helllo aaaa</Button>
       <img src="/vite.svg" class="logo" alt="Vite logo" />
     </a>
     <a href="https://vuejs.org/" target="_blank">
