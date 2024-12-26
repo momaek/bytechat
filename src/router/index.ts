@@ -13,7 +13,7 @@ const router = createRouter({
           path: '',
           name: 'home',
           component: () => import('@/views/HomeView.vue'),
-          meta: { requiresAuth: true }
+          meta: { requireAuth: true }// 需要认证的路由
         }
         // 其他需要布局的路由...
       ]
