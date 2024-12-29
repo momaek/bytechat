@@ -5,7 +5,7 @@ import tailwind from 'tailwindcss'
 import { defineConfig, loadEnv } from 'vite'
 
 // https://vite.dev/config/
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ mode }) => {
   return {
     css: {
       postcss: {

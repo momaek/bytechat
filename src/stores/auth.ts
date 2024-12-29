@@ -11,7 +11,7 @@ export const useAuthStore = defineStore('auth', {
   },
   
   actions: {
-    login(credentials: { username: string; password: string }) {
+    login() {
       // 实现登录逻辑
     },
     logout() {
