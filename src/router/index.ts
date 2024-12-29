@@ -12,8 +12,20 @@ const router = createRouter({
         {
           path: '',
           name: 'home',
-          component: () => import('@/views/HomeView.vue'),
+          component: () => import('@/views/chat/index.vue'),
           meta: { requireAuth: true }// 需要认证的路由
+        },
+        {
+          path: 'chat/:uuid',
+          name: 'chat',
+          component: () => import('@/views/chat/index.vue'),
+          meta: { requireAuth: true }
+        },
+        {
+          path: 'settings',
+          name: 'settings',
+          component: () => import('@/views/settings/index.vue'),
+          meta: { requireAuth: true }
         }
         // 其他需要布局的路由...
       ]
@@ -21,7 +33,7 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import('@/views/LoginView.vue'),
+      component: () => import('@/views/user/LoginView.vue'),
       meta: { requiresAuth: false }
     }
   ]

@@ -13,45 +13,26 @@ import {
 } from '@/components/ui/avatar'
 
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible'
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Separator } from '@/components/ui/separator'
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarInset,
   SidebarMenu,
   SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
+  SidebarSeparator,
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
@@ -62,25 +43,25 @@ import {
   Bell,
   BookOpen,
   Bot,
-  ChevronRight,
   ChevronsUpDown,
   Command,
   CreditCard,
-  Folder,
-  Forward,
+  SquarePen,
   Frame,
   GalleryVerticalEnd,
   LogOut,
   Map,
   MoreHorizontal,
   PieChart,
-  Plus,
   Settings2,
   Sparkles,
   SquareTerminal,
   Trash2,
+  Plus,
+  Settings,
+  Library,
+  Palette,
 } from 'lucide-vue-next'
-import { ref } from 'vue'
 
 // This is sample data.
 const data = {
@@ -211,116 +192,39 @@ const data = {
     },
   ],
 }
-
-const activeTeam = ref(data.teams[0])
-
-function setActiveTeam(team: typeof data.teams[number]) {
-  activeTeam.value = team
-}
 </script>
 
 <template>
   <SidebarProvider>
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" class="bg-sidebar-primary text-sidebar-primary-foreground">
       <SidebarHeader>
-        <SidebarMenu>
+        <SidebarMenu class="space-y-5">
           <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger as-child>
-                <SidebarMenuButton
-                  size="lg"
-                  class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                >
-                  <div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                    <component :is="activeTeam.logo" class="size-4" />
-                  </div>
-                  <div class="grid flex-1 text-left text-sm leading-tight">
-                    <span class="truncate font-semibold">{{ activeTeam.name }}</span>
-                    <span class="truncate text-xs">{{ activeTeam.plan }}</span>
-                  </div>
-                  <ChevronsUpDown class="ml-auto" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                class="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-                align="start"
-                side="bottom"
-                :side-offset="4"
-              >
-                <DropdownMenuLabel class="text-xs text-muted-foreground">
-                  Teams
-                </DropdownMenuLabel>
-                <DropdownMenuItem
-                  v-for="(team, index) in data.teams"
-                  :key="team.name"
-                  class="gap-2 p-2"
-                  @click="setActiveTeam(team)"
-                >
-                  <div class="flex size-6 items-center justify-center rounded-sm border">
-                    <component :is="team.logo" class="size-4 shrink-0" />
-                  </div>
-                  {{ team.name }}
-                  <DropdownMenuShortcut>⌘{{ index + 1 }}</DropdownMenuShortcut>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem class="gap-2 p-2">
-                  <div class="flex size-6 items-center justify-center rounded-md border bg-background">
-                    <Plus class="size-4" />
-                  </div>
-                  <div class="font-medium text-muted-foreground">
-                    Add team
-                  </div>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <SidebarMenuButton size="lg"
+              class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+              <div
+                class="flex aspect-square size-12 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                <img class="rounded-lg" src="../assets/logo.svg" alt="">
+              </div>
+              <div class="grid flex-1 text-left text-sm leading-tight">
+                <h2 class="px-5 text-lg font-medium">ByteChat</h2>
+              </div>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton :tooltip="$t('sidebar.new_chat')"
+              class="py-5 outline-1 outline-gray-200 hover:bg-gray-100">
+              <Plus />
+              <span>{{ $t('sidebar.new_chat') }}</span>
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Platform</SidebarGroupLabel>
-          <SidebarMenu>
-            <Collapsible
-              v-for="item in data.navMain"
-              :key="item.title"
-              as-child
-              :default-open="item.isActive"
-              class="group/collapsible"
-            >
-              <SidebarMenuItem>
-                <CollapsibleTrigger as-child>
-                  <SidebarMenuButton :tooltip="item.title">
-                    <component :is="item.icon" />
-                    <span>{{ item.title }}</span>
-                    <ChevronRight class="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                  </SidebarMenuButton>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarMenuSub>
-                    <SidebarMenuSubItem
-                      v-for="subItem in item.items"
-                      :key="subItem.title"
-                    >
-                      <SidebarMenuSubButton as-child>
-                        <a :href="subItem.url">
-                          <span>{{ subItem.title }}</span>
-                        </a>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                  </SidebarMenuSub>
-                </CollapsibleContent>
-              </SidebarMenuItem>
-            </Collapsible>
-          </SidebarMenu>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>Projects</SidebarGroupLabel>
-          <SidebarMenu>
-            <SidebarMenuItem
-              v-for="item in data.projects"
-              :key="item.name"
-            >
-              <SidebarMenuButton as-child>
+        <SidebarGroup class="group-data-[collapsible=icon]:hidden">
+          <SidebarMenu class=" max-h-96 overflow-y-auto">
+            <SidebarMenuItem class="p2-5" v-for="item in data.projects" :key="item.name">
+              <SidebarMenuButton class="hover:bg-gray-100 active:bg-gray-100" as-child>
                 <a :href="item.url">
                   <component :is="item.icon" />
                   <span>{{ item.name }}</span>
@@ -334,27 +238,49 @@ function setActiveTeam(team: typeof data.teams[number]) {
                   </SidebarMenuAction>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent class="w-48 rounded-lg" side="bottom" align="end">
-                  <DropdownMenuItem>
-                    <Folder class="text-muted-foreground" />
-                    <span>View Project</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Forward class="text-muted-foreground" />
-                    <span>Share Project</span>
+                  <DropdownMenuItem class="cursor-pointer">
+                    <SquarePen class="text-muted-foreground" />
+                    <span>{{ $t('sidebar.edit_chat') }}</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <Trash2 class="text-muted-foreground" />
-                    <span>Delete Project</span>
+                  <DropdownMenuItem class="cursor-pointer">
+                    <Trash2 class="text-red-500" />
+                    <span class="text-red-500">{{ $t('sidebar.delete_chat') }}</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
+        <SidebarSeparator class="bg-gray-100" />
+        <SidebarGroup>
+          <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton class="text-sidebar-foreground/70">
-                <MoreHorizontal class="text-sidebar-foreground/70" />
-                <span>More</span>
-              </SidebarMenuButton>
+              <router-link :to="'/chats'">
+                <SidebarMenuButton :tooltip="$t('sidebar.chats')"
+                  class="text-sidebar-foreground/70 hover:bg-gray-100 active:bg-gray-100">
+                  <Library class=" text-sidebar-foreground/70" />
+                  <span>{{ $t('sidebar.chats') }}</span>
+                </SidebarMenuButton>
+              </router-link>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <router-link :to="'/draw'">
+                <SidebarMenuButton :tooltip="$t('sidebar.draw')"
+                  class="text-sidebar-foreground/70 hover:bg-gray-100 active:bg-gray-100">
+                  <Palette class=" text-sidebar-foreground/70" />
+                  <span>{{ $t('sidebar.draw') }}</span>
+                </SidebarMenuButton>
+              </router-link>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <router-link :to="'/settings'">
+                <SidebarMenuButton :tooltip="$t('sidebar.settings')"
+                  class="text-sidebar-foreground/70 hover:bg-gray-100 active:bg-gray-100">
+                  <Settings class=" text-sidebar-foreground/70" />
+                  <span>{{ $t('sidebar.settings') }}</span>
+                </SidebarMenuButton>
+              </router-link>
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
@@ -364,35 +290,34 @@ function setActiveTeam(team: typeof data.teams[number]) {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger as-child>
-                <SidebarMenuButton
-                  size="lg"
-                  class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                >
+                <SidebarMenuButton size="lg"
+                  class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
                   <Avatar class="h-8 w-8 rounded-lg">
                     <AvatarImage :src="data.user.avatar" :alt="data.user.name" />
                     <AvatarFallback class="rounded-lg">
-                      CN
+                      Byte
                     </AvatarFallback>
                   </Avatar>
                   <div class="grid flex-1 text-left text-sm leading-tight">
-                    <span class="truncate font-semibold">{{ data.user.name }}</span>
-                    <span class="truncate text-xs">{{ data.user.email }}</span>
+                    <span class="truncate font-semibold">HelloByte</span>
+                    <span class="truncate text-xs">hello@bytechat.com</span>
                   </div>
                   <ChevronsUpDown class="ml-auto size-4" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
-              <DropdownMenuContent class="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg" side="bottom" align="end" :side-offset="4">
+              <DropdownMenuContent class="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg" side="bottom"
+                align="end" :side-offset="4">
                 <DropdownMenuLabel class="p-0 font-normal">
                   <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                     <Avatar class="h-8 w-8 rounded-lg">
                       <AvatarImage :src="data.user.avatar" :alt="data.user.name" />
                       <AvatarFallback class="rounded-lg">
-                        CN
+                        Byte
                       </AvatarFallback>
                     </Avatar>
                     <div class="grid flex-1 text-left text-sm leading-tight">
-                      <span class="truncate font-semibold">{{ data.user.name }}</span>
-                      <span class="truncate text-xs">{{ data.user.email }}</span>
+                      <span class="truncate font-semibold">HelloByte</span>
+                      <span class="truncate text-xs">hello@bytechat.com</span>
                     </div>
                   </div>
                 </DropdownMenuLabel>
@@ -400,28 +325,28 @@ function setActiveTeam(team: typeof data.teams[number]) {
                 <DropdownMenuGroup>
                   <DropdownMenuItem>
                     <Sparkles />
-                    Upgrade to Pro
+                    {{ $t('sidebar.upgrade_pro') }}
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   <DropdownMenuItem>
                     <BadgeCheck />
-                    Account
+                    {{ $t('sidebar.account') }}
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <CreditCard />
-                    Billing
+                    {{ $t('sidebar.billing') }}
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Bell />
-                    Notifications
+                    {{ $t('sidebar.notifications') }}
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <LogOut />
-                  Log out
+                  {{ $t('sidebar.logout') }}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -431,33 +356,15 @@ function setActiveTeam(team: typeof data.teams[number]) {
       <SidebarRail />
     </Sidebar>
     <SidebarInset>
-      <header class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+      <header
+        class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
         <div class="flex items-center gap-2 px-4">
           <SidebarTrigger class="-ml-1" />
-          <Separator orientation="vertical" class="mr-2 h-4" />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem class="hidden md:block">
-                <BreadcrumbLink href="#">
-                  Building Your Application
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator class="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
         </div>
       </header>
-      <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-          <div class="aspect-video rounded-xl bg-muted/50" />
-          <div class="aspect-video rounded-xl bg-muted/50" />
-          <div class="aspect-video rounded-xl bg-muted/50" />
-        </div>
-        <div class="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-      </div>
+      <main>
+        <RouterView />
+      </main>
     </SidebarInset>
   </SidebarProvider>
 </template>

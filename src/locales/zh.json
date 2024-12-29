@@ -1,0 +1,14 @@
+{
+  "sidebar.new_chat": "新建聊天",
+  "sidebar.settings": "设置",
+  "sidebar.chats": "全部记录",
+  "sidebar.logout": "登出",
+  "sidebar.billing": "价格",
+  "sidebar.account": "账户",
+  "sidebar.upgrade_pro": "升级到专业版",
+  "sidebar.notifications": "通知",
+  "sidebar.edit_chat": "编辑",
+  "sidebar.delete_chat": "删除",
+  "sidebar.delete_chat_confirm": "确定删除该聊天记录吗？",
+  "sidebar.draw": "绘画"
+}
