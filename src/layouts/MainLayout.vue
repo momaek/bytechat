@@ -199,7 +199,7 @@ const data = {
     <div class="drag-area"></div>
     <SidebarProvider>
       <Sidebar collapsible="icon" class="bg-sidebar-primary text-sidebar-primary-foreground">
-        <SidebarHeader class="mt-3">
+        <SidebarHeader class="mt-3.5">
           <SidebarMenu class="space-y-5">
             <SidebarMenuItem>
               <SidebarMenuButton size="lg"
@@ -364,20 +364,10 @@ const data = {
             <SidebarTrigger class="-ml-1" />
           </div>
         </header>
-        <main>
+        <main class="flex flex-1 flex-col gap-4 p-4 pt-0">
           <RouterView />
         </main>
       </SidebarInset>
     </SidebarProvider>
   </div>
 </template>
-<style scoped>
-.drag-area {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 20px; /* 拖动区域的高度 */
-  -webkit-app-region: drag; /* 启用拖动功能 */
-}
-</style>

@@ -10,5 +10,14 @@
   "sidebar.edit_chat": "编辑",
   "sidebar.delete_chat": "删除",
   "sidebar.delete_chat_confirm": "确定删除该聊天记录吗？",
-  "sidebar.draw": "绘画"
+  "sidebar.draw": "绘画",
+
+  "setting.appearance": "外观",
+  "setting.model_config": "模型配置",
+  "setting.language": "语言",
+  "setting.select_language": "选择语言",
+  "setting.theme": "主题",
+  "setting.theme.light": "明亮模式",
+  "setting.theme.dark": "暗黑模式",
+  "setting.theme.system": "跟随系统"
 }

@@ -10,5 +10,14 @@
   "sidebar.edit_chat": "Edit",
   "sidebar.delete_chat": "Delete",
   "sidebar.delete_chat_confirm": "Are you sure you want to delete this chat?",
-  "sidebar.draw": "Draw"
+  "sidebar.draw": "Draw",
+
+  "setting.appearance": "Appearance",
+  "setting.model_config": "Model Config",
+  "setting.language": "Language",
+  "setting.select_language": "Select Language",
+  "setting.theme": "Theme",
+  "setting.theme.light": "Light",
+  "setting.theme.dark": "Dark",
+  "setting.theme.system": "System"
 }

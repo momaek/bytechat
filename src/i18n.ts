@@ -10,10 +10,13 @@ const messages = {
   zh,
 };
 
+const savedLocale = localStorage.getItem('locale') || 'zh';
+
 const i18n = createI18n({
-  locale: 'zh', // set locale
-  fallbackLocale: 'en', // set fallback locale
-  messages, // set locale messages
+  legacy: false,
+  locale: savedLocale,
+  fallbackLocale: 'en',
+  messages,
 });
 
 export default i18n;
