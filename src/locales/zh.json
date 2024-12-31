@@ -19,5 +19,6 @@
   "setting.theme": "主题",
   "setting.theme.light": "明亮模式",
   "setting.theme.dark": "暗黑模式",
-  "setting.theme.system": "跟随系统"
+  "setting.theme.system": "跟随系统",
+  "setting.save": "保存"
 }

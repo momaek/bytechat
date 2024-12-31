@@ -26,6 +26,18 @@ const router = createRouter({
           name: 'settings',
           component: () => import('@/views/settings/index.vue'),
           meta: { requireAuth: true }
+        },
+        {
+          path: 'draw',
+          name: 'draw',
+          component: () => import('@/views/draw/MjView.vue'),
+          meta: { requireAuth: true }
+        },
+        {
+          path: 'chats',
+          name: 'allChats',
+          component: () => import('@/views/chat/index.vue'),
+          meta: { requireAuth: true }
         }
         // 其他需要布局的路由...
       ]

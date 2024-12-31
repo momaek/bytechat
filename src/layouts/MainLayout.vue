@@ -215,7 +215,7 @@ const data = {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton :tooltip="$t('sidebar.new_chat')"
-                class="py-5 outline-1 outline-gray-200 hover:bg-gray-100">
+                class="py-5 outline-1 outline-muted-foreground/50 hover:bg-muted">
                 <Plus />
                 <span>{{ $t('sidebar.new_chat') }}</span>
               </SidebarMenuButton>
@@ -226,7 +226,7 @@ const data = {
           <SidebarGroup class="group-data-[collapsible=icon]:hidden">
             <SidebarMenu class=" max-h-96 overflow-y-auto">
               <SidebarMenuItem class="p2-5" v-for="item in data.projects" :key="item.name">
-                <SidebarMenuButton class="hover:bg-gray-100 active:bg-gray-100" as-child>
+                <SidebarMenuButton class="hover:bg-muted active:bg-muted" as-child>
                   <a :href="item.url">
                     <component :is="item.icon" />
                     <span>{{ item.name }}</span>
@@ -254,13 +254,14 @@ const data = {
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroup>
-          <SidebarSeparator class="bg-gray-100" />
+          <SidebarSeparator class="bg-muted" />
           <SidebarGroup>
             <SidebarMenu>
               <SidebarMenuItem>
                 <router-link :to="'/chats'">
                   <SidebarMenuButton :tooltip="$t('sidebar.chats')"
-                    class="text-sidebar-foreground/70 hover:bg-gray-100 active:bg-gray-100">
+                    class="text-sidebar-foreground/70 hover:bg-muted"
+                    :class="{ 'bg-muted': $route.path === '/chats' }">
                     <Library class=" text-sidebar-foreground/70" />
                     <span>{{ $t('sidebar.chats') }}</span>
                   </SidebarMenuButton>
@@ -269,7 +270,8 @@ const data = {
               <SidebarMenuItem>
                 <router-link :to="'/draw'">
                   <SidebarMenuButton :tooltip="$t('sidebar.draw')"
-                    class="text-sidebar-foreground/70 hover:bg-gray-100 active:bg-gray-100">
+                    class="text-sidebar-foreground/70 hover:bg-muted"
+                    :class="{ 'bg-muted': $route.path === '/draw' }">
                     <Palette class=" text-sidebar-foreground/70" />
                     <span>{{ $t('sidebar.draw') }}</span>
                   </SidebarMenuButton>
@@ -277,8 +279,10 @@ const data = {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <router-link :to="'/settings'">
-                  <SidebarMenuButton :tooltip="$t('sidebar.settings')"
-                    class="text-sidebar-foreground/70 hover:bg-gray-100 active:bg-gray-100">
+                  <SidebarMenuButton :isActive="true" :tooltip="$t('sidebar.settings')"
+                    class="text-sidebar-foreground/70 hover:bg-muted"
+                    :class="{ 'bg-muted': $route.path === '/settings' }"
+                    >
                     <Settings class=" text-sidebar-foreground/70" />
                     <span>{{ $t('sidebar.settings') }}</span>
                   </SidebarMenuButton>

@@ -19,5 +19,6 @@
   "setting.theme": "Theme",
   "setting.theme.light": "Light",
   "setting.theme.dark": "Dark",
-  "setting.theme.system": "System"
+  "setting.theme.system": "System",
+  "setting.save": "Save"
 }

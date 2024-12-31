@@ -7,7 +7,7 @@
     </p>
   </div>
   <Separator />
-  <Form v-slot="{ setFieldValue }" class="space-y-8">
+  <Form class="space-y-8">
     <FormField
       v-slot="{ value }"
       name="language"
@@ -24,7 +24,7 @@
                 :aria-expanded="open"
                 :class="
                   cn(
-                    'w-[400px] justify-between',
+                    'w-[450px] justify-between',
                     !value && 'text-muted-foreground'
                   )
                 "
@@ -40,7 +40,7 @@
               </Button>
             </FormControl>
           </PopoverTrigger>
-          <PopoverContent class="w-[400px] p-0">
+          <PopoverContent class="w-[450px] p-0">
             <Command>
               <CommandInput placeholder="Search language..." />
               <CommandEmpty>No language found.</CommandEmpty>
@@ -52,7 +52,7 @@
                     :value="language.label"
                     @select="
                       () => {
-                        setFieldValue('language', language.value);
+                        currentLanguage = language.value;
                         open = false;
                       }
                     "
@@ -80,15 +80,16 @@
       </FormItem>
     </FormField>
 
-    <FormField v-slot="{ componentField }" type="radio" name="theme">
+    <FormField v-slot="{ componentField }" type="radio" name="theme" :model-value="currentMode">
       <FormItem class="space-y-4">
         <FormLabel>{{ $t("setting.theme") }}</FormLabel>
         <FormDescription> Select the theme for the dashboard. </FormDescription>
         <FormMessage />
 
         <RadioGroup
-          class="grid max-w-xl grid-cols-3 gap-8 pt-2"
+          class="grid max-w-md grid-cols-2 gap-8 pt-2"
           v-bind="componentField"
+          @update:model-value="(value : string) => currentMode = value"
         >
           <FormItem>
             <FormLabel class="[&:has([data-state=checked])>div]:border-primary">
@@ -154,49 +155,12 @@
               </span>
             </FormLabel>
           </FormItem>
-          <FormItem>
-            <FormLabel class="[&:has([data-state=checked])>div]:border-primary">
-              <FormControl>
-                <RadioGroupItem value="auto" class="sr-only" />
-              </FormControl>
-              <div
-                class="items-center rounded-md border-2 border-muted p-1 hover:border-accent"
-              >
-                <div
-                  class="space-y-2 rounded-sm bg-[#ecedef] p-2 relative overflow-hidden"
-                >
-                  <div
-                    class="absolute inset-0 bg-slate-800 clip-path-diagonal"
-                  ></div>
-                  <div class="space-y-2 rounded-md bg-white p-2 shadow-sm">
-                    <div class="h-2 w-20 rounded-lg bg-[#ecedef]" />
-                    <div class="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
-                  </div>
-                  <div
-                    class="flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm"
-                  >
-                    <div class="h-4 w-4 rounded-full bg-[#ecedef]" />
-                    <div class="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
-                  </div>
-                  <div
-                    class="flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm"
-                  >
-                    <div class="h-4 w-4 rounded-full bg-[#ecedef]" />
-                    <div class="h-2 w-[100px] rounded-lg bg-[#ecedef]" />
-                  </div>
-                </div>
-              </div>
-              <span class="block w-full p-2 text-center font-normal">
-                {{ $t("setting.theme.system") }}
-              </span>
-            </FormLabel>
-          </FormItem>
         </RadioGroup>
       </FormItem>
     </FormField>
 
     <div class="flex justify-start">
-      <Button type="submit"> Update preferences </Button>
+      <Button @click="saveSettings"> {{ $t("setting.save")  }} </Button>
     </div>
   </Form>
 </template>
@@ -230,8 +194,12 @@ import { cn } from "@/utils/utils";
 import { Check, ChevronsUpDown } from "lucide-vue-next";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { useColorMode } from '@vueuse/core'
 
+const mode = useColorMode()
 const open = ref(false);
+const currentMode = ref<string>(mode.value);
+
 
 const languages = [
   { label: "English", value: "en" },
@@ -244,6 +212,12 @@ const currentLanguage = ref(locale.value);
 const changeLanguage = (lang: string) => {
   locale.value = lang;
   localStorage.setItem("locale", lang);
+};
+
+const saveSettings = (e: Event) => {
+  e.preventDefault();
+  changeLanguage(currentLanguage.value);
+  mode.value = currentMode.value as 'light' | 'dark' | 'auto';
 };
 </script>
 <style>
