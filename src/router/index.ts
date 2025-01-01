@@ -16,7 +16,7 @@ const router = createRouter({
           meta: { requireAuth: true }// 需要认证的路由
         },
         {
-          path: 'chat/:uuid',
+          path: 'chat/:chat_id',
           name: 'chat',
           component: () => import('@/views/chat/index.vue'),
           meta: { requireAuth: true }
