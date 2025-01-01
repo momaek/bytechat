@@ -52,6 +52,7 @@ import {
   Library,
   Palette,
 } from "lucide-vue-next";
+import logo from "@/components/icons/logo.vue";
 import { ref } from "vue";
 
 // This is sample data.
@@ -80,7 +81,7 @@ const data = {
   ],
 };
 
-const chatStore = useChatStore()
+const chatStore = useChatStore();
 const chats = ref<Chat[]>(chatStore.chats);
 </script>
 
@@ -102,7 +103,7 @@ const chats = ref<Chat[]>(chatStore.chats);
                 <div
                   class="flex aspect-square size-12 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"
                 >
-                  <img class="rounded-lg" src="../assets/logo.svg" alt="" />
+                  <logo class="text-primary rounded-lg w-12 h-12" />
                 </div>
                 <div class="grid flex-1 text-left text-sm leading-tight">
                   <h2 class="px-5 text-lg font-medium">ByteChat</h2>
@@ -125,7 +126,7 @@ const chats = ref<Chat[]>(chatStore.chats);
             <SidebarMenu class="max-h-96 overflow-y-auto">
               <SidebarMenuItem
                 v-for="chat in chats"
-                class="item-center flex "
+                class="item-center flex"
                 :key="chat.id"
               >
                 <SidebarMenuButton
@@ -138,10 +139,9 @@ const chats = ref<Chat[]>(chatStore.chats);
                     class="flex items-center w-full"
                   >
                     <div class="flex flex-col flex-grow space-y-0.5 min-w-0">
-                      <span
-                        class="text-sm truncate text-ellipsis"
-                        >{{ chat.title }}</span
-                      >
+                      <span class="text-sm truncate text-ellipsis">{{
+                        chat.title
+                      }}</span>
                       <div
                         class="flex items-center text-xs text-muted-foreground truncate text-ellipsis min-w-0"
                       >
