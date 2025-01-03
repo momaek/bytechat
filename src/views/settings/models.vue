@@ -12,7 +12,10 @@
     </div>
 
     <Dialog v-bind:open="apiDialog">
-      <DialogContent class="md:max-w-[824px]" @close="apiDialog = false">
+      <DialogContent
+        class="md:max-w-[824px] max-h-[90dvh]"
+        @close="apiDialog = false"
+      >
         <DialogHeader>
           <DialogTitle>{{ $t("setting.model.new_api_key") }}</DialogTitle>
           <DialogDescription>
@@ -20,6 +23,19 @@
           </DialogDescription>
         </DialogHeader>
         <form class="grid gap-4 py-4">
+          <FormField v-slot="{ componentField }" name="name">
+            <FormItem>
+              <FormLabel>{{ $t("setting.model.api_key_name") }}</FormLabel>
+              <FormControl>
+                <Input
+                  type="text"
+                  placeholder="Zenbot"
+                  v-bind="componentField"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          </FormField>
           <FormField
             v-slot="{ componentField }"
             name="provider"
@@ -95,10 +111,49 @@
               <FormMessage />
             </FormItem>
           </FormField>
+          <FormField
+            v-slot="{ value }"
+            name="models"
+            v-if="form.values.models?.length"
+          >
+            <FormItem>
+              <FormLabel>Loaded Models</FormLabel>
+              <FormControl>
+                <TagsInput
+                  :model-value="value"
+                  class="max-h-[25dvh] overflow-auto"
+                >
+                  <TagsInputItem
+                    v-for="item in value"
+                    :key="item"
+                    :value="item"
+                  >
+                    <TagsInputItemText />
+                    <TagsInputItemDelete />
+                  </TagsInputItem>
+
+                  <TagsInputInput />
+                </TagsInput>
+              </FormControl>
+              <FormDescription>{{
+                $t("setting.model.loaded_models")
+              }}</FormDescription>
+              <FormMessage />
+            </FormItem>
+          </FormField>
         </form>
-        <DialogFooter>
-          <Button @click="loadProviderSupportedModels"> Load Models</Button>
-          <Button> Save changes </Button>
+        <DialogFooter class="sm:justify-between">
+          <Button variant="outline" @click="apiDialog = false">
+            {{ $t("setting.cancel") }}
+          </Button>
+          <div class="gap-4 flex">
+            <Button @click="loadProviderSupportedModels">{{
+              $t("setting.model.load_models")
+            }}</Button>
+            <Button :disabled="!form.values.models">{{
+              $t("setting.save")
+            }}</Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -118,9 +173,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import type { API } from "@/types/chat";
+import type { API, Model } from "@/types/chat";
 import { ref } from "vue";
-import { providers } from "@/consts/providers";
+import { getProviderByName, providers } from "@/consts/providers";
 import {
   Select,
   SelectContent,
@@ -141,24 +196,23 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  TagsInput,
+  TagsInputInput,
+  TagsInputItem,
+  TagsInputItemDelete,
+  TagsInputItemText,
+} from "@/components/ui/tags-input";
+import OpenAI from "openai";
+import { useModelStore } from "@/stores/model";
+import { genRandomeID } from "@/utils/utils";
 
 const newAPIFormSchema = toTypedSchema(
   z.object({
-    provider: z
-      .string({
-        required_error: "请选择服务商",
-      })
-      .min(1, "请选择服务商"),
-    base: z
-      .string({
-        required_error: "API Base 不能为空",
-      })
-      .min(1, "API Base 不能为空"),
-    api_key: z
-      .string({
-        required_error: "API Key 不能为空",
-      })
-      .min(1, "API Key 不能为空"),
+    name: z.string().min(1, "请填写名称"),
+    provider: z.string().min(1, "请选择服务商"),
+    base: z.string().min(1, "API Base 不能为空"),
+    api_key: z.string().min(1, "API Key 不能为空"),
     models: z.array(z.string()).optional(),
   })
 );
@@ -167,15 +221,40 @@ const form = useForm({
   validationSchema: newAPIFormSchema,
 });
 
+const modelStore = useModelStore();
+
 const loadProviderSupportedModels = async () => {
   const { valid } = await form.validate();
   if (!valid) {
     return;
   }
-  const { provider, base, api_key } = form.values;
-  console.log("Current form values:", { provider, base, api_key });
+  const { name, provider, base, api_key } = form.values;
+  const client = new OpenAI({
+    baseURL: base,
+    apiKey: api_key,
+    dangerouslyAllowBrowser: true,
+  });
+  const models = await client.models.list();
+  form.setFieldValue(
+    "models",
+    models.data.map((model) => model.id)
+  );
+  modelStore.addAPI({
+    name: name,
+    provider: getProviderByName(provider as string),
+    base: base,
+    key: api_key,
+    models: models.data.map(
+      (model) =>
+        ({
+          id: genRandomeID(),
+          name: model.id,
+          api_base: base,
+          api_key: api_key,
+        } as Model)
+    ),
+  } as API);
 };
 
-// const modelStore = useModelStore();
 const apiDialog = ref(false);
 </script>

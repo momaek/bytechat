@@ -21,11 +21,15 @@
   "setting.theme.dark": "Dark",
   "setting.theme.system": "System",
   "setting.save": "Save",
+  "setting.cancel": "Cancel",
   "setting.model_config_desc": "Add an API Key and get the models supported by the corresponding API Key. You can add multiple API Keys.",
   "setting.model.new_api_key": "Add API Key",
   "setting.model.api_key": "API Key",
   "setting.model.api_base": "API Base",
   "setting.model.api_key_placeholder": "Enter your API Key",
-  "setting.model.api_base_placeholder": "https://one.zenbot.me",
-  "setting.model.api_base_recommend": "Recommended API Provider"
+  "setting.model.api_base_placeholder": "https://one.zenbot.me/v1",
+  "setting.model.api_base_recommend": "Recommended API Provider",
+  "setting.model.load_models": "Load Models",
+  "setting.model.loaded_models": "Loaded Models",
+  "setting.model.api_key_name": "Name"
 }

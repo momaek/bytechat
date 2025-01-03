@@ -11,3 +11,7 @@ export const providers: Provider[] = [
     icon: Openai
   }
 ]
+
+export function getProviderByName(name: string) {
+  return providers.find(provider => provider.name === name)
+}

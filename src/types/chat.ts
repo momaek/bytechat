@@ -17,21 +17,23 @@ export interface ChatMessage {
 export interface Model {
     id: string
     name: string
-    key: string
-    type: string
-    api: API,
-    temperature: number
-    max_tokens: number
-    top_p: number
-    frequency_penalty: number
-    presence_penalty: number
+    key?: string
+    api_base: string,
+    api_key: string,
+    temperature?: number
+    max_tokens?: number
+    top_p?: number
+    frequency_penalty?: number
+    presence_penalty?: number
     description?: string
 }
 
 export interface API {
+    name: string
     base: string
-    token: string
+    key: string
     provider: Provider
+    models?: Model[]
 }
 
 export interface Provider { 

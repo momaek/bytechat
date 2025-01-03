@@ -21,11 +21,15 @@
   "setting.theme.dark": "暗黑模式",
   "setting.theme.system": "跟随系统",
   "setting.save": "保存",
+  "setting.cancel": "关闭",
   "setting.model_config_desc": "新增 API Key 并获取对应 API Key 支持的模型，可以增加很多个 API Key。",
   "setting.model.new_api_key": "新增 API Key",
   "setting.model.api_key": "API Key",
   "setting.model.api_base": "API 地址",
   "setting.model.api_key_placeholder": "请输入你的 API Key",
-  "setting.model.api_base_placeholder": "https://one.zenbot.me",
-  "setting.model.api_base_recommend": "推荐的 API 供应商"
+  "setting.model.api_base_placeholder": "https://one.zenbot.me/v1",
+  "setting.model.api_base_recommend": "推荐的 API 供应商",
+  "setting.model.load_models": "加载模型",
+  "setting.model.loaded_models": "支持的模型",
+  "setting.model.api_key_name": "名称"
 }
