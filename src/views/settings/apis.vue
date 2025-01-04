@@ -22,7 +22,7 @@
             {{ $t("setting.model_config_desc") }}
           </DialogDescription>
         </DialogHeader>
-        <form class="grid gap-4 py-4">
+        <form class="grid gap-4 max-h-[50dvh] overflow-auto">
           <FormField v-slot="{ componentField }" name="name">
             <FormItem>
               <FormLabel>{{ $t("setting.model.api_key_name") }}</FormLabel>
@@ -39,7 +39,7 @@
           <FormField
             v-slot="{ componentField }"
             name="provider"
-            class="grid grid-cols-4 items-center gap-4"
+            class="grid grid-cols-4 items-center"
           >
             <FormItem>
               <FormLabel>Provider</FormLabel>
@@ -121,7 +121,7 @@
               <FormControl>
                 <TagsInput
                   :model-value="value"
-                  class="max-h-[25dvh] overflow-auto"
+                  class="max-h-[15dvh] overflow-auto"
                 >
                   <TagsInputItem
                     v-for="item in value"
@@ -142,6 +142,7 @@
             </FormItem>
           </FormField>
         </form>
+        <Separator />
         <DialogFooter class="sm:justify-between">
           <Button variant="outline" @click="apiDialog = false">
             {{ $t("setting.cancel") }}

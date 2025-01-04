@@ -13,7 +13,7 @@
       <Appearance />
     </TabsContent>
     <TabsContent value="ModelsConfig" class="space-y-6">
-      <Models />
+      <APIs />
     </TabsContent>
   </Tabs>
   </div>
@@ -22,5 +22,5 @@
 <script lang="ts" setup>
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import Appearance from './appearance.vue'
-import Models from './models.vue'
+import APIs from './apis.vue'
 </script>
