@@ -13,7 +13,7 @@
 
     <Dialog v-bind:open="apiDialog">
       <DialogContent
-        class="md:max-w-[824px] max-h-[90dvh]"
+        class="sm:max-w-[824px] max-h-[90dvh]"
         @close="apiDialog = false"
       >
         <DialogHeader>
@@ -22,7 +22,7 @@
             {{ $t("setting.model_config_desc") }}
           </DialogDescription>
         </DialogHeader>
-        <form class="grid gap-4 max-h-[50dvh] overflow-auto">
+        <form class="grid gap-4 max-h-[50dvh] p-2 overflow-auto">
           <FormField v-slot="{ componentField }" name="name">
             <FormItem>
               <FormLabel>{{ $t("setting.model.api_key_name") }}</FormLabel>
@@ -53,10 +53,10 @@
                 <FormMessage />
                 <SelectContent>
                   <SelectItem v-for="p in providers" :value="p.name">
-                    <span class="flex items-center"
-                      ><component :is="p.icon" class="w-4 mr-2" />
-                      {{ p.name }}</span
-                    >
+                    <span class="flex items-center">
+                      <component :is="p.icon" class="w-4 mr-2" />
+                      {{ p.name }}
+                    </span>
                   </SelectItem>
                 </SelectContent>
               </Select>
@@ -71,13 +71,25 @@
               <FormLabel>
                 {{ $t("setting.model.api_key") }}
               </FormLabel>
-              <FormControl>
-                <Input
-                  v-bind="componentField"
-                  :placeholder="$t('setting.model.api_key_placeholder')"
-                  class="col-span-3"
-                />
-              </FormControl>
+              <div class="relative">
+                <FormControl>
+                  <Input
+                    :type="showPassword ? 'text' : 'password'"
+                    v-bind="componentField"
+                    :placeholder="$t('setting.model.api_key_placeholder')"
+                    class="col-span-3"
+                  />
+                  <span
+                    class="h-4 absolute right-2 top-2.5 text-primary/80 cursor-pointer"
+                  >
+                    <EyeClosed
+                      @click="togglePasswordVisibility"
+                      v-if="!showPassword"
+                    />
+                    <Eye v-else @click="togglePasswordVisibility" />
+                  </span>
+                </FormControl>
+              </div>
               <FormDescription> </FormDescription>
               <FormMessage />
             </FormItem>
@@ -160,11 +172,44 @@
     </Dialog>
   </div>
   <Separator />
+  <div class="grid sm:grid-cols-2 gap-2">
+    <Card class="sm:col-span-1" v-for="api in apis">
+      <CardContent class="p-3 flex gap-2">
+        <component :is="api.provider.icon" class="w-7" />
+        <div class="flex w-full justify-between">
+          <div>
+            <h3 class="transition-colors hover:text-blue-600 cursor-pointer">
+              {{ api.name }}
+            </h3>
+            <p class="text-muted-foreground text-sm">{{ api.base }}</p>
+          </div>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <span
+                  class="flex flex-shrink-0 flex-col items-center gap-y-1 rounded-lg p-1 text-xs transition-colors hover:text-blue-600 focus:text-blue-600 cursor-pointer"
+                  @click="editModelOpen = true; editAPI = api"
+                >
+                  <Bookmark />
+                  <span>{{ api.models?.length }}</span>
+                </span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Edit Models</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+  <models :api="editAPI" :dialog_open="editModelOpen" @update:dialog-close="editModelOpen = false"/>
 </template>
 <script setup lang="ts">
+import models from "./models.vue";
 import { Separator } from "@/components/ui/separator";
 import Button from "@/components/ui/button/Button.vue";
-// import { useModelStore } from "@/stores/model";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -175,7 +220,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import type { API, Model } from "@/types/chat";
-import { ref } from "vue";
+import { computed, markRaw, ref } from "vue";
 import { getProviderByName, providers } from "@/consts/providers";
 import {
   Select,
@@ -184,7 +229,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus } from "lucide-vue-next";
+import { Plus, Eye, EyeClosed, Bookmark } from "lucide-vue-next";
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
@@ -207,6 +252,12 @@ import {
 import OpenAI from "openai";
 import { useModelStore } from "@/stores/model";
 import { genRandomeID } from "@/utils/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const newAPIFormSchema = toTypedSchema(
   z.object({
@@ -258,4 +309,21 @@ const loadProviderSupportedModels = async () => {
 };
 
 const apiDialog = ref(false);
+const showPassword = ref(false);
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value;
+};
+const apis = computed(() => {
+  const apisFromStore = modelStore.apis;
+  return apisFromStore.map((api) => {
+    const providerInfo = providers.find((p) => p.name === api.provider.name);
+    if (providerInfo) {
+      api.provider = markRaw(providerInfo);
+    }
+    return api;
+  });
+});
+
+const editAPI = ref<API>({} as API)
+const editModelOpen = ref<boolean>(false)
 </script>

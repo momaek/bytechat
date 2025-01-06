@@ -80,7 +80,12 @@
       </FormItem>
     </FormField>
 
-    <FormField v-slot="{ componentField }" type="radio" name="theme" :model-value="currentMode">
+    <FormField
+      v-slot="{ componentField }"
+      type="radio"
+      name="theme"
+      :model-value="currentMode"
+    >
       <FormItem class="space-y-4">
         <FormLabel>{{ $t("setting.theme") }}</FormLabel>
         <FormDescription> Select the theme for the dashboard. </FormDescription>
@@ -160,7 +165,7 @@
     </FormField>
 
     <div class="flex justify-start">
-      <Button @click="saveSettings"> {{ $t("setting.save")  }} </Button>
+      <Button @click="saveSettings"> {{ $t("setting.save") }} </Button>
     </div>
   </Form>
 </template>
@@ -194,12 +199,11 @@ import { cn } from "@/utils/utils";
 import { Check, ChevronsUpDown } from "lucide-vue-next";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { useColorMode } from '@vueuse/core'
+import { useColorMode } from "@vueuse/core";
 
-const mode = useColorMode()
+const mode = useColorMode();
 const open = ref(false);
 const currentMode = ref<string>(mode.value);
-
 
 const languages = [
   { label: "English", value: "en" },
@@ -217,7 +221,7 @@ const changeLanguage = (lang: string) => {
 const saveSettings = (e: Event) => {
   e.preventDefault();
   changeLanguage(currentLanguage.value);
-  mode.value = currentMode.value as 'light' | 'dark' | 'auto';
+  mode.value = currentMode.value as "light" | "dark" | "auto";
 };
 </script>
 <style>

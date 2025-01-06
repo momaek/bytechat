@@ -1,4 +1,12 @@
 {
+  "common.delete": "Delete",
+  "common.cancel": "Cancel",
+  "common.confirm": "Confirm",
+  "common.edit": "Edit",
+  "common.save": "Save",
+  "common.close": "Close",
+  "common.copy": "Copy",
+
   "sidebar.new_chat": "New Chat",
   "sidebar.chats": "All Chats",
   "sidebar.settings": "Settings",

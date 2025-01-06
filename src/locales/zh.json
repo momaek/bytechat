@@ -1,4 +1,13 @@
 {
+  "common.delete": "删除",
+  "common.cancel": "取消",
+  "common.confirm": "确认",
+  "common.edit": "编辑",
+  "common.save": "保存",
+  "common.close": "关闭",
+  "common.copy": "复制",
+  "common.export": "导出",
+
   "sidebar.new_chat": "新建聊天",
   "sidebar.settings": "设置",
   "sidebar.chats": "全部记录",
