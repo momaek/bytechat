@@ -13,16 +13,16 @@
 
     <Dialog v-bind:open="apiDialog">
       <DialogContent
-        class="sm:max-w-[824px] max-h-[90dvh]"
+        class="sm:max-w-[824px] max-h-[80dvh] flex flex-col"
         @close="apiDialog = false"
       >
-        <DialogHeader>
+        <DialogHeader class="flex-none">
           <DialogTitle>{{ $t("setting.model.new_api_key") }}</DialogTitle>
           <DialogDescription>
             {{ $t("setting.model_config_desc") }}
           </DialogDescription>
         </DialogHeader>
-        <form class="grid gap-4 max-h-[50dvh] p-2 overflow-auto">
+        <form class="grid gap-4 p-2 overflow-auto flex-1">
           <FormField v-slot="{ componentField }" name="name">
             <FormItem>
               <FormLabel>{{ $t("setting.model.api_key_name") }}</FormLabel>
@@ -133,7 +133,7 @@
               <FormControl>
                 <TagsInput
                   :model-value="value"
-                  class="max-h-[15dvh] overflow-auto"
+                  class="max-h-[25dvh] overflow-auto"
                 >
                   <TagsInputItem
                     v-for="item in value"
@@ -154,8 +154,8 @@
             </FormItem>
           </FormField>
         </form>
-        <Separator />
-        <DialogFooter class="sm:justify-between">
+        <Separator class="flex-none" />
+        <DialogFooter class="sm:justify-between flex-none">
           <Button variant="outline" @click="apiDialog = false">
             {{ $t("setting.cancel") }}
           </Button>

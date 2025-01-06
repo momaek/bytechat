@@ -2,7 +2,7 @@
   <Dialog v-bind:open="isDialogOpen">
     <DialogContent
       @close="handleCancel"
-      class="sm:max-w-[924px] max-h-[50dvh] flex flex-col"
+      class="sm:max-w-[924px] max-h-[80dvh] flex flex-col"
     >
       <DialogHeader class="flex-none">
         <DialogTitle>Model List</DialogTitle>
