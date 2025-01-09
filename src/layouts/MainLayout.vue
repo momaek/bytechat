@@ -111,13 +111,15 @@ const chats = ref<Chat[]>(chatStore.chats);
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton
-                :tooltip="$t('sidebar.new_chat')"
-                class="py-5 outline-1 outline-border hover:bg-muted"
-              >
-                <Plus />
-                <span>{{ $t("sidebar.new_chat") }}</span>
-              </SidebarMenuButton>
+              <router-link :to="'/'" class="flex items-center w-full">
+                <SidebarMenuButton
+                  :tooltip="$t('sidebar.new_chat')"
+                  class="py-5 outline-1 outline-border hover:bg-muted"
+                >
+                  <Plus />
+                  <span>{{ $t("sidebar.new_chat") }}</span>
+                </SidebarMenuButton>
+              </router-link>
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarHeader>
