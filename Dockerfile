@@ -10,7 +10,7 @@ COPY . .
 RUN yarn install
 
 # Build the project
-RUN npm run build:nologin
+RUN yarn build:nologin
 
 # Stage 2: Serve the built files using Nginx
 FROM registry.cn-hangzhou.aliyuncs.com/ohmygd/nginx:latest
