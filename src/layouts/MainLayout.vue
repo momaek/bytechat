@@ -103,7 +103,7 @@ const chats = ref<Chat[]>(chatStore.chats);
                 <div
                   class="flex aspect-square size-12 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"
                 >
-                  <logo class="text-primary rounded-lg w-12 h-12" />
+                  <logo class="text-black dark:text-white rounded-lg w-12 h-12" />
                 </div>
                 <div class="grid flex-1 text-left text-sm leading-tight">
                   <h2 class="px-5 text-lg font-medium">ByteChat</h2>
