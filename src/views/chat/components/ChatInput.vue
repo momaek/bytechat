@@ -30,7 +30,7 @@
         <textarea
           v-model="message"
           ref="textareaRef"
-          rows="4"
+          rows="2"
           class="w-full resize-none px-3 pt-2 pb-10 text-md max-h-[20dvh] focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
           placeholder="输入消息..."
           @input="adjustHeight"
@@ -94,7 +94,7 @@
                   <LayoutTemplateIcon class="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>模板</TooltipContent>
+              <TooltipContent>模型切换</TooltipContent>
             </Tooltip>
 
             <Tooltip>
@@ -118,7 +118,7 @@
                   <AlignJustifyIcon class="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>格式化</TooltipContent>
+              <TooltipContent>设置</TooltipContent>
             </Tooltip>
           </div>
 

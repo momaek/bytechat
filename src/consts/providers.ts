@@ -9,6 +9,10 @@ export const providers: Provider[] = [
   {
     name: "OpenAI Compatible",
     icon: Openai
+  },
+  {
+    name: "Midjourney",
+    icon: Openai
   }
 ]
 

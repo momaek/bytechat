@@ -35,7 +35,7 @@ export const useModelStore = defineStore('model', {
       this.apis = this.apis.filter(a => a.base !== api.base)
     },
     updateAPI(api: API) {
-      const index = this.apis.findIndex(a => a.base === api.base)
+      const index = this.apis.findIndex(a => a.id === api.id)
       this.apis[index] = api
     }
   },

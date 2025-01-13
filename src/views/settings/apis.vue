@@ -156,14 +156,19 @@
         </form>
         <Separator class="flex-none" />
         <DialogFooter class="sm:justify-between flex-none">
-          <Button variant="outline" @click="apiDialog = false">
-            {{ $t("setting.cancel") }}
-          </Button>
+          <div class="flex gap-4">
+            <Button variant="outline" @click="apiDialog = false">
+              {{ $t("setting.cancel") }}
+            </Button>
+            <Button variant="destructive" v-if="isEditing">
+              {{ $t("common.delete") }}
+            </Button>
+          </div>
           <div class="gap-4 flex">
             <Button @click="loadProviderSupportedModels">{{
               $t("setting.model.load_models")
             }}</Button>
-            <Button :disabled="!form.values.models">{{
+            <Button :disabled="!form.values.models" @click="saveAPI">{{
               $t("setting.save")
             }}</Button>
           </div>
@@ -188,7 +193,10 @@
               <TooltipTrigger>
                 <span
                   class="flex flex-shrink-0 flex-col items-center gap-y-1 rounded-lg p-1 text-xs transition-colors hover:text-blue-600 focus:text-blue-600 cursor-pointer"
-                  @click="editModelOpen = true; editAPI = api"
+                  @click="
+                    editModelOpen = true;
+                    editAPI = api;
+                  "
                 >
                   <Bookmark />
                   <span>{{ api.models?.length }}</span>
@@ -203,7 +211,11 @@
       </CardContent>
     </Card>
   </div>
-  <models :api="editAPI" :dialog_open="editModelOpen" @update:dialog-close="editModelOpen = false"/>
+  <models
+    :api="editAPI"
+    :dialog_open="editModelOpen"
+    @update:dialog-close="editModelOpen = false"
+  />
 </template>
 <script setup lang="ts">
 import models from "./models.vue";
@@ -220,6 +232,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import type { API, Model } from "@/types/chat";
+import type { Model as OpenAIModel } from "openai/src/resources/models.js";
 import { computed, markRaw, ref } from "vue";
 import { getProviderByName, providers } from "@/consts/providers";
 import {
@@ -259,6 +272,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+const isEditing = ref(false);
+
 const newAPIFormSchema = toTypedSchema(
   z.object({
     name: z.string().min(1, "请填写名称"),
@@ -274,29 +289,39 @@ const form = useForm({
 });
 
 const modelStore = useModelStore();
-
+const loadedModel = ref<OpenAIModel[]>([]);
 const loadProviderSupportedModels = async () => {
   const { valid } = await form.validate();
   if (!valid) {
     return;
   }
-  const { name, provider, base, api_key } = form.values;
+  const { base, api_key } = form.values;
   const client = new OpenAI({
     baseURL: base,
     apiKey: api_key,
     dangerouslyAllowBrowser: true,
   });
   const models = await client.models.list();
+  loadedModel.value = models.data;
   form.setFieldValue(
     "models",
     models.data.map((model) => model.id)
   );
+};
+
+const saveAPI = async () => {
+  const { valid } = await form.validate();
+  if (!valid) {
+    return;
+  }
+  const { name, provider, base, api_key } = form.values;
   modelStore.addAPI({
+    id: genRandomeID(),
     name: name,
     provider: getProviderByName(provider as string),
     base: base,
     key: api_key,
-    models: models.data.map(
+    models: loadedModel.value.map(
       (model) =>
         ({
           id: genRandomeID(),
@@ -306,6 +331,8 @@ const loadProviderSupportedModels = async () => {
         } as Model)
     ),
   } as API);
+  apiDialog.value = false;
+  loadedModel.value = [];
 };
 
 const apiDialog = ref(false);
@@ -324,6 +351,6 @@ const apis = computed(() => {
   });
 });
 
-const editAPI = ref<API>({} as API)
-const editModelOpen = ref<boolean>(false)
+const editAPI = ref<API>({} as API);
+const editModelOpen = ref<boolean>(false);
 </script>

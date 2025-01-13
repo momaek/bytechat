@@ -4,7 +4,13 @@ export interface Chat {
     id: string
     title: string
     model: Model
-    messages: ChatMessage[]
+    prompt?: string
+    temperature?: number
+    max_tokens?: number
+    top_p?: number
+    frequency_penalty?: number
+    presence_penalty?: number
+    messages?: ChatMessage[]
     created_at: string
 }
 export interface ChatMessage {
@@ -20,15 +26,11 @@ export interface Model {
     key?: string
     api_base: string,
     api_key: string,
-    temperature?: number
-    max_tokens?: number
-    top_p?: number
-    frequency_penalty?: number
-    presence_penalty?: number
     description?: string
 }
 
 export interface API {
+    id: string
     name: string
     base: string
     key: string
