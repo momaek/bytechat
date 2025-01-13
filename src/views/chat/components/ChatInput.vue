@@ -22,7 +22,7 @@
           v-if="isGenerating"
           class="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 flex items-center justify-center rounded-lg"
         >
-          <Button variant="destructive">
+          <Button variant="destructive" @click="stopGenerating">
             <XIcon class="h-4 w-4 mr-2" />
             停止生成
           </Button>
@@ -31,7 +31,7 @@
           v-model="message"
           ref="textareaRef"
           rows="2"
-          class="w-full resize-none px-3 pt-2 pb-10 text-md max-h-[20dvh] focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+          class="w-full resize-none px-3 pt-2 pb-10 text-md max-h-[20dvh] bg-transparent focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
           placeholder="输入消息..."
           @input="adjustHeight"
           @keydown.enter="handleKeyDown"
@@ -177,6 +177,12 @@ const handleKeyDown = (e: KeyboardEvent) => {
   e.preventDefault();
   handleSend();
 };
+
+const stopGenerating = () => {
+    emit("stop");
+    isGenerating.value = false;
+}
+
 const adjustHeight = () => {
   const textarea = textareaRef.value;
   if (!textarea) return;

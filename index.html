@@ -11,7 +11,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://api.your-domain.com" />
     <!-- 更新标题 -->
-    <title>Your App Name</title>
+    <title>ByteChat</title>
+
   </head>
   <body>
     <div id="app"></div>
@@ -20,6 +21,16 @@
     <noscript>
       <strong>请启用 JavaScript 以获得最佳体验。</strong>
     </noscript>
+    <script>
+      // 在页面加载最开始就执行
+      (function() {
+        const theme = localStorage.getItem('vueuse-color-scheme')
+        if (theme) {
+          document.documentElement.className = theme
+        }
+      })()
+    </script>
     <script type="module" src="/src/main.ts"></script>
+
   </body>
 </html>

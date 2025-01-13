@@ -1,6 +1,7 @@
 <template>
+  <Toaster />
   <div class="flex-1 max-w-2xl m-auto overflow-auto">
-    <Card class="w-full">
+    <Card class="w-full max-h-[50dvh] overflow-auto">
       <CardHeader>
         <CardTitle>Create Chat</CardTitle>
         <CardDescription>Create a chat in one-click.</CardDescription>
@@ -87,13 +88,17 @@
             </div>
             <div class="flex flex-col space-y-1.5">
               <Label for="prompt">Prompt or Select Bot?</Label>
-              <Textarea id="prompt" v-model="chat.prompt" placeholder="Enter a prompt" />
+              <Textarea
+                id="prompt"
+                v-model="chat.prompt"
+                placeholder="Enter a prompt"
+              />
             </div>
           </div>
         </form>
       </CardContent>
       <CardFooter class="flex justify-end px-6 pb-6">
-        <Button>Create</Button>
+        <Button @click="createChat">Create</Button>
       </CardFooter>
     </Card>
   </div>
@@ -127,9 +132,14 @@ import {
 import { Check, ChevronsUpDown } from "lucide-vue-next";
 import { computed, ref } from "vue";
 import type { Chat } from "@/types/chat";
-import { cn } from "@/utils/utils";
+import { cn, genRandomeID } from "@/utils/utils";
 import { useModelStore } from "@/stores/model";
+import Toaster from "@/components/ui/toast/Toaster.vue";
+import { useToast } from "@/components/ui/toast/use-toast";
+import { useChatStore } from "@/stores/chat";
+
 const open = ref(false);
+const chatStore = useChatStore();
 const chat = ref<Chat>({} as Chat);
 const modelStore = useModelStore();
 const apis = computed(() => modelStore.apis);
@@ -141,5 +151,23 @@ const findModelName = (modelId: string) => {
     }
   }
   return "";
+};
+
+const { toast } = useToast();
+const createChat = () => {
+  if (!chat.value.model) {
+    toast({
+      title: "Error",
+      description: "Please select a model",
+      variant: "destructive",
+    });
+    return;
+  }
+
+  chat.value.id = genRandomeID();
+  chat.value.created_at = new Date();
+
+  chatStore.addToFirst(chat.value);
+  chat.value = {} as Chat;
 };
 </script>

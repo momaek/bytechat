@@ -11,7 +11,7 @@ export interface Chat {
     frequency_penalty?: number
     presence_penalty?: number
     messages?: ChatMessage[]
-    created_at: string
+    created_at: Date
 }
 export interface ChatMessage {
     id: string
