@@ -232,7 +232,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import type { API, Model } from "@/types/chat";
-import type { Model as OpenAIModel } from "openai/src/resources/models.js";
 import { computed, markRaw, ref } from "vue";
 import { getProviderByName, providers } from "@/consts/providers";
 import {
@@ -262,7 +261,7 @@ import {
   TagsInputItemDelete,
   TagsInputItemText,
 } from "@/components/ui/tags-input";
-import OpenAI from "openai";
+import { OpenAI } from "@/apis/openai";
 import { useModelStore } from "@/stores/model";
 import { genRandomeID } from "@/utils/utils";
 import {
@@ -271,6 +270,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import type { Model as OpenAIModel } from "@/types/openai";
 
 const isEditing = ref(false);
 
@@ -296,12 +296,8 @@ const loadProviderSupportedModels = async () => {
     return;
   }
   const { base, api_key } = form.values;
-  const client = new OpenAI({
-    baseURL: base,
-    apiKey: api_key,
-    dangerouslyAllowBrowser: true,
-  });
-  const models = await client.models.list();
+  const client = new OpenAI(api_key as string, base);
+  const models = await client.listModels();
   loadedModel.value = models.data;
   form.setFieldValue(
     "models",
