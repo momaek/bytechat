@@ -1,3 +1,5 @@
+import Claude from "@/components/icons/claude.vue";
+import Midjourney from "@/components/icons/midjourney.vue";
 import Openai from "@/components/icons/openai.vue";
 import type { Provider } from "@/types/chat";
 
@@ -12,7 +14,11 @@ export const providers: Provider[] = [
   },
   {
     name: "Midjourney",
-    icon: Openai
+    icon: Midjourney
+  },
+  {
+    name: "Claude",
+    icon: Claude
   }
 ]
 

@@ -91,19 +91,19 @@ const chats = ref<Chat[]>(chatStore.chats);
     <SidebarProvider>
       <Sidebar
         collapsible="icon"
-        class="bg-sidebar-primary text-sidebar-primary-foreground"
+        class="bg-sidebar-primary text-sidebar-primary-foreground bg-background"
       >
-        <SidebarHeader class="mt-3.5">
+        <SidebarHeader class="bg-background">
           <SidebarMenu class="space-y-5">
-            <SidebarMenuItem>
+            <SidebarMenuItem class="flex justify-center">
               <SidebarMenuButton
                 size="lg"
                 class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
               >
                 <div
-                  class="flex aspect-square size-12 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"
+                  class="flex items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"
                 >
-                  <logo class="text-black dark:text-white rounded-lg w-12 h-12" />
+                  <logo class="text-black dark:text-white rounded-lg w-10 h-10 flex justify-center" />
                 </div>
                 <div class="grid flex-1 text-left text-sm leading-tight">
                   <h2 class="px-5 text-lg font-medium">ByteChat</h2>
@@ -111,7 +111,7 @@ const chats = ref<Chat[]>(chatStore.chats);
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <router-link :to="'/'" class="flex items-center w-full">
+              <router-link :to="'/'" class="flex items-center justify-center w-full">
                 <SidebarMenuButton
                   :tooltip="$t('sidebar.new_chat')"
                   class="py-5 outline-1 outline-border hover:bg-muted"
@@ -123,7 +123,7 @@ const chats = ref<Chat[]>(chatStore.chats);
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarHeader>
-        <SidebarContent>
+        <SidebarContent class="bg-background">
           <SidebarGroup class="group-data-[collapsible=icon]:hidden">
             <SidebarMenu class="max-h-96 overflow-y-auto">
               <SidebarMenuItem
@@ -191,7 +191,7 @@ const chats = ref<Chat[]>(chatStore.chats);
           <SidebarGroup>
             <SidebarMenu>
               <SidebarMenuItem>
-                <router-link :to="'/chats'">
+                <router-link :to="'/chats'" class="flex justify-center">
                   <SidebarMenuButton
                     :tooltip="$t('sidebar.chats')"
                     class="text-sidebar-foreground/70 hover:bg-muted"
@@ -203,7 +203,7 @@ const chats = ref<Chat[]>(chatStore.chats);
                 </router-link>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <router-link :to="'/draw'">
+                <router-link :to="'/draw'" class="flex justify-center">
                   <SidebarMenuButton
                     :tooltip="$t('sidebar.draw')"
                     class="text-sidebar-foreground/70 hover:bg-muted"
@@ -215,7 +215,7 @@ const chats = ref<Chat[]>(chatStore.chats);
                 </router-link>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <router-link :to="'/settings'">
+                <router-link :to="'/settings'" class="flex justify-center">
                   <SidebarMenuButton
                     :isActive="true"
                     :tooltip="$t('sidebar.settings')"
@@ -230,7 +230,7 @@ const chats = ref<Chat[]>(chatStore.chats);
             </SidebarMenu>
           </SidebarGroup>
         </SidebarContent>
-        <SidebarFooter>
+        <SidebarFooter class="bg-background">
           <SidebarMenu>
             <SidebarMenuItem>
               <DropdownMenu>
@@ -239,7 +239,7 @@ const chats = ref<Chat[]>(chatStore.chats);
                     size="lg"
                     class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                   >
-                    <Avatar class="h-8 w-8 rounded-lg">
+                    <Avatar class="h-10 w-10 rounded-lg">
                       <AvatarImage
                         :src="data.user.avatar"
                         :alt="data.user.name"

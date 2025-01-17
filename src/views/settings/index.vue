@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-[100vh] flex-1 rounded-xl md:min-h-min justify-center flex">
-    <Tabs default-value="Appearance" class="w-[700px]">
+    <Tabs default-value="Appearance" class="max-w-3xl">
     <TabsList>
       <TabsTrigger value="Appearance">
        {{ $t('setting.appearance') }}  
