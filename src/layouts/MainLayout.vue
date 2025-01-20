@@ -54,6 +54,7 @@ import {
 } from "lucide-vue-next";
 import logo from "@/components/icons/logo.vue";
 import { ref } from "vue";
+import DeleteConfirm from "./components/DeleteConfirm.vue";
 
 // This is sample data.
 const data = {
@@ -83,11 +84,23 @@ const data = {
 
 const chatStore = useChatStore();
 const chats = ref<Chat[]>(chatStore.chats);
+const deleteOpen = ref(false);
+const deleteId = ref("");
+
+const deleteChat = (chat: Chat) => {
+  deleteOpen.value = true;
+  deleteId.value = chat.id;
+};
+
+const editChat = (chat: Chat) => {
+  console.log("====", chat);
+};
 </script>
 
 <template>
   <div class="aruelayout">
     <div class="drag-area"></div>
+    <DeleteConfirm :open="deleteOpen" :chat-id="deleteId" @update:open="deleteOpen = $event" />
     <SidebarProvider>
       <Sidebar
         collapsible="icon"
@@ -103,7 +116,9 @@ const chats = ref<Chat[]>(chatStore.chats);
                 <div
                   class="flex items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"
                 >
-                  <logo class=" text-primary rounded-lg w-10 h-10 flex justify-center" />
+                  <logo
+                    class="text-primary rounded-lg w-10 h-10 flex justify-center"
+                  />
                 </div>
                 <div class="grid flex-1 text-left text-sm leading-tight">
                   <h2 class="px-5 text-lg font-medium">ByteChat</h2>
@@ -111,7 +126,10 @@ const chats = ref<Chat[]>(chatStore.chats);
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <router-link :to="'/'" class="flex items-center justify-center w-full">
+              <router-link
+                :to="'/'"
+                class="flex items-center justify-center w-full"
+              >
                 <SidebarMenuButton
                   :tooltip="$t('sidebar.new_chat')"
                   class="py-5 outline-1 outline-border hover:bg-muted"
@@ -171,12 +189,18 @@ const chats = ref<Chat[]>(chatStore.chats);
                     side="bottom"
                     align="end"
                   >
-                    <DropdownMenuItem class="cursor-pointer">
+                    <DropdownMenuItem
+                      class="cursor-pointer"
+                      @click="editChat(chat)"
+                    >
                       <SquarePen class="text-muted-foreground" />
                       <span>{{ $t("sidebar.edit_chat") }}</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem class="cursor-pointer">
+                    <DropdownMenuItem
+                      class="cursor-pointer"
+                      @click="deleteChat(chat)"
+                    >
                       <Trash2 class="text-red-500" />
                       <span class="text-red-500">{{
                         $t("sidebar.delete_chat")

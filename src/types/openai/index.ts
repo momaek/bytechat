@@ -90,6 +90,11 @@ export interface Message {
     [property: string]: any;
 }
 
+export interface ChatInputData {
+    text: string;
+    images?: string[]
+}
+
 export interface ChatCompletionResponse {
     choices: Choice[];
     created: number;

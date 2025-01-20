@@ -17,13 +17,13 @@ export interface ChatMessage {
     id: string
     role: string
     content: string
+    images?: string[]
     created_at: string
 }
 
 export interface Model {
     id: string
     name: string
-    key?: string
     api_base: string,
     api_key: string,
     description?: string

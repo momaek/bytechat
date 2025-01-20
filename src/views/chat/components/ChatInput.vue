@@ -1,6 +1,6 @@
 <template>
-  <div class="absolute bottom-0 left-0 right-0 p-4">
-    <div class="max-w-4xl mx-auto rounded-lg">
+  <div class=" bottom-0 left-0 right-0 p-4">
+    <div class="max-w-6xl mx-auto rounded-lg">
       <!-- 图片预览区域 -->
       <div v-if="images.length > 0" class="mb-2 flex flex-wrap gap-2">
         <div
@@ -66,6 +66,7 @@
                 <Button
                   variant="ghost"
                   class="hover:bg-muted hover:text-primary transition-colors"
+                  @click="clearContext"
                 >
                   <Paintbrush class="h-4 w-4" />
                 </Button>
@@ -73,7 +74,7 @@
               <TooltipContent>清理当前所有上下文</TooltipContent>
             </Tooltip>
 
-            <Tooltip>
+            <!-- <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   variant="ghost"
@@ -83,13 +84,14 @@
                 </Button>
               </TooltipTrigger>
               <TooltipContent>分享</TooltipContent>
-            </Tooltip>
+            </Tooltip> -->
 
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   variant="ghost"
                   class="hover:bg-muted hover:text-primary transition-colors"
+                  @click="toggleModel"
                 >
                   <LayoutTemplateIcon class="h-4 w-4" />
                 </Button>
@@ -97,7 +99,7 @@
               <TooltipContent>模型切换</TooltipContent>
             </Tooltip>
 
-            <Tooltip>
+            <!-- <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   variant="ghost"
@@ -107,13 +109,14 @@
                 </Button>
               </TooltipTrigger>
               <TooltipContent>重新生成</TooltipContent>
-            </Tooltip>
+            </Tooltip> -->
 
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   variant="ghost"
                   class="hover:bg-muted hover:text-primary transition-colors"
+                  @click="toggleSetting"
                 >
                   <AlignJustifyIcon class="h-4 w-4" />
                 </Button>
@@ -135,15 +138,13 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted, nextTick, computed } from "vue";
 import { Button } from "@/components/ui/button";
 import {
   ImageIcon,
   SendIcon,
   XIcon,
-  Share2Icon,
   LayoutTemplateIcon,
-  RefreshCwIcon,
   AlignJustifyIcon,
   Paintbrush,
 } from "lucide-vue-next";
@@ -152,25 +153,31 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import type { ChatInputData } from "@/types/openai";
 
-interface SendData {
-  text: string;
-  images: string[];
-}
+const props = defineProps({
+  generating: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 const message = ref("");
 const images = ref<string[]>([]);
 const textareaRef = ref<HTMLTextAreaElement>();
 const fileInput = ref<HTMLInputElement>();
-const isGenerating = ref(false);
+const isGenerating = computed(() => props.generating);
 
 const emit = defineEmits<{
-  send: [data: SendData];
+  send: [data: ChatInputData];
   stop: [];
+  clear: [];
+  toggleModel: [];
+  toggleSetting: [];
 }>();
 const handleKeyDown = (e: KeyboardEvent) => {
   // 如果按下了 shift 键，不阻止默认行为（允许换行）
-  if (e.shiftKey) {
+  if (e.shiftKey || e.isComposing || e.keyCode === 229) {
     return;
   }
   // 否则阻止默认行为并发送消息
@@ -179,9 +186,8 @@ const handleKeyDown = (e: KeyboardEvent) => {
 };
 
 const stopGenerating = () => {
-    emit("stop");
-    isGenerating.value = false;
-}
+  emit("stop");
+};
 
 const adjustHeight = () => {
   const textarea = textareaRef.value;
@@ -234,6 +240,20 @@ const removeImage = (index: number) => {
   images.value.splice(index, 1);
 };
 
+const clearContext = () => {
+  message.value = "";
+  images.value = [];
+  emit("clear");
+};
+
+const toggleModel = () => {
+  emit("toggleModel");
+};
+
+const toggleSetting = () => {
+  emit("toggleSetting");
+};
+
 const handleSend = () => {
   if (!message.value.trim() && images.value.length === 0) return;
 
@@ -241,8 +261,6 @@ const handleSend = () => {
     text: message.value,
     images: images.value,
   });
-
-  isGenerating.value = true;
 
   message.value = "";
   images.value = [];

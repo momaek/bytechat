@@ -137,12 +137,14 @@ import { useModelStore } from "@/stores/model";
 import Toaster from "@/components/ui/toast/Toaster.vue";
 import { useToast } from "@/components/ui/toast/use-toast";
 import { useChatStore } from "@/stores/chat";
+import { useRouter } from "vue-router";
 
 const open = ref(false);
 const chatStore = useChatStore();
 const chat = ref<Chat>({} as Chat);
 const modelStore = useModelStore();
 const apis = computed(() => modelStore.apis);
+const router = useRouter()
 const findModelName = (modelId: string) => {
   for (const api of apis.value) {
     const model = api.models?.find((m) => m.id === modelId);
@@ -166,8 +168,14 @@ const createChat = () => {
 
   chat.value.id = genRandomeID();
   chat.value.created_at = new Date();
-
+  router.push({
+    name: "chat",
+    params: {
+      chat_id: chat.value.id,
+    },
+  });
   chatStore.addToFirst(chat.value);
+  
   chat.value = {} as Chat;
 };
 </script>
