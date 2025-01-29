@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col h-screen max-h-[calc(100dvh-4rem)]">
+  <div class="flex flex-col h-screen max-h-[calc(100dvh-5rem)] overscroll-contain">
     <ChatMessages
-      class="flex-1 h-full overflow-auto mb-6"
+      class="flex-1 h-full overflow-auto mb-6 overscroll-contain"
       :messages="currentChat?.messages"
     />
     <div class="flex-none border-t bg-background">
@@ -16,6 +16,7 @@
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 import type { ChatInputData } from "@/types/openai";
 import ChatInput from "./components/ChatInput.vue";
@@ -38,8 +39,6 @@ const currentChat = computed(() => {
   return chatStore.chats.find((chat) => chat.id === chatId);
 });
 
-// 获取当前聊天的消息列表
-// const chatMessages = computed(() => currentChat.value?.messages || []);
 
 const formatMessage = (msg: ChatMessage) => {
   if (msg.images && msg.images.length > 0) {

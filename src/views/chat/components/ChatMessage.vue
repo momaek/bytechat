@@ -32,19 +32,19 @@
           <TrashIcon class="h-4 w-4" />
         </Button>
       </div>
-      <div class="rounded-lg bg-muted p-4">
+      <div class="rounded-lg border p-4">
         <template v-if="message.content">
-          <MdPreview :id="message.id" :codeFoldable="false" :modelValue="message.content" />
+          <MdPreview :theme="mode as Themes"  :id="message.id" :codeFoldable="false" :modelValue="message.content" />
         </template>
         <template v-else>
           <div class="flex items-center space-x-2">
-            <div class="h-2 w-2 animate-bounce rounded-full bg-zinc-400"></div>
+            <div class="h-2 w-2 animate-bounce rounded-full bg-muted"></div>
             <div
-              class="h-2 w-2 animate-bounce rounded-full bg-zinc-400"
+              class="h-2 w-2 animate-bounce rounded-full bg-muted"
               style="animation-delay: 0.2s"
             ></div>
             <div
-              class="h-2 w-2 animate-bounce rounded-full bg-zinc-400"
+              class="h-2 w-2 animate-bounce rounded-full bg-muted"
               style="animation-delay: 0.4s"
             ></div>
           </div>
@@ -61,11 +61,14 @@ import { Button } from "@/components/ui/button";
 import { Copy, CopyCheck, RefreshCwIcon, TrashIcon } from "lucide-vue-next";
 // ... existing code ...
 import type { ChatMessage } from "@/types/chat";
-import { MdPreview } from "md-editor-v3";
+import { MdPreview, type Themes } from "md-editor-v3";
 import "md-editor-v3/lib/preview.css";
 import { computed, ref } from "vue";
 import { useClipboard } from "@vueuse/core";
 import { formatTime } from "@/utils/utils";
+import { useColorMode } from "@vueuse/core";
+
+const mode = useColorMode();
 
 const props = defineProps<{
   message: ChatMessage;
