@@ -14,7 +14,7 @@
     >
       <div
         v-show="showToolbox"
-        class="absolute right-0 top-0 -mt-8 flex space-x-2"
+        class="absolute right-0 bottom-0 flex space-x-2"
       >
         <Button
           variant="ghost"
@@ -25,16 +25,23 @@
           <CopyCheck class="h-4 w-4" v-if="copied" />
           <Copy class="h-4 w-4" v-else />
         </Button>
-        <Button variant="ghost" size="icon" @click="handleRegenerate">
+        <Button variant="ghost" size="icon" @click="handleRegenerate" v-if="!isUserMessage">
           <RefreshCwIcon class="h-4 w-4" />
         </Button>
         <Button variant="ghost" size="icon" @click="handleDelete">
           <TrashIcon class="h-4 w-4" />
         </Button>
       </div>
-      <div class="rounded-lg border p-4">
+      <div class="rounded-lg border p-1">
         <template v-if="message.content">
-          <MdPreview :theme="mode as Themes"  :id="message.id" :codeFoldable="false" :modelValue="message.content" />
+          <MdPreview
+            class="!bg-background !text-foreground"
+            :theme="mode as Themes"
+            :id="message.id"
+            :codeFoldable="false"
+            :modelValue="message.content"
+            codeTheme="github"
+          />
         </template>
         <template v-else>
           <div class="flex items-center space-x-2">
@@ -50,7 +57,9 @@
           </div>
         </template>
       </div>
-      <p class="text-sm text-muted-foreground/50 mt-2">{{ formatTime(message.created_at) }}</p>
+      <p class="text-sm text-muted-foreground/50 mt-2">
+        {{ formatTime(message.created_at) }}
+      </p>
     </div>
   </div>
 </template>
@@ -82,7 +91,7 @@ const avatarSrc = computed(() =>
   isUserMessage.value ? "/user-avatar.png" : "/ai-avatar.png"
 );
 
-const emit = defineEmits(["copy", "regenerate", "delete"]);
+const emit = defineEmits(["regenerate", "delete"]);
 
 const { copy, copied } = useClipboard();
 
@@ -95,6 +104,6 @@ const handleRegenerate = () => {
 };
 
 const handleDelete = () => {
-  emit("delete", message.value);
+  emit("delete", message.value)
 };
 </script>

@@ -1,8 +1,11 @@
 <template>
-  <div class="flex flex-col h-screen max-h-[calc(100dvh-5rem)] overscroll-contain">
+  <div
+    class="flex flex-col h-screen max-h-[calc(100dvh-5rem)] overscroll-contain"
+  >
     <ChatMessages
       class="flex-1 h-full overflow-auto mb-6 overscroll-contain"
       :messages="currentChat?.messages"
+      @delete="deleteMessage"
     />
     <div class="flex-none border-t bg-background">
       <ChatInput
@@ -39,6 +42,11 @@ const currentChat = computed(() => {
   return chatStore.chats.find((chat) => chat.id === chatId);
 });
 
+const deleteMessage = (msg: ChatMessage) => {
+  if (currentChat.value) {
+    chatStore.deleteMessage(currentChat.value.id, msg.id);
+  }
+};
 
 const formatMessage = (msg: ChatMessage) => {
   if (msg.images && msg.images.length > 0) {
@@ -111,7 +119,6 @@ const sendMessage = async (data: ChatInputData) => {
     created_at: new Date().toISOString(),
   };
 
-  // 添加用户消息
   chatStore.appendOrUpdateMessage(currentChat.value, userMessage);
 
   // 获取最近6条消息并格式化

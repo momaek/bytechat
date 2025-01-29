@@ -3,7 +3,13 @@
     class="flex flex-col gap-2 w-full max-w-6xl mx-auto"
     ref="chatMessagesRef"
   >
-    <ChatMessage v-for="(msg, idx) in messages" :key="idx" :message="msg" />
+    <ChatMessage
+      v-for="(msg, idx) in messages"
+      :key="idx"
+      :message="msg"
+      @delete="emit('delete', msg)"
+      @regenerate="emit('regenerate', msg)"
+    />
   </div>
 </template>
 
@@ -11,9 +17,12 @@
 import { computed, nextTick, ref, watch } from "vue";
 import ChatMessage from "./ChatMessage.vue";
 import type { ChatMessage as Message } from "@/types/chat";
+
 const props = defineProps<{
   messages?: Message[];
 }>();
+
+const emit = defineEmits(["regenerate", "delete"]);
 
 const messages = computed(() => props.messages);
 
